@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import datetime as dt
 from django.http  import HttpResponse, Http404
 
@@ -13,7 +13,7 @@ def welcome(request):
 def news_of_day(request):
     date = dt.date.today()
     # FUNCTION TO CONVERT DATE OBJECT TO FIND EXACT DAY
-    day = convert_dates(date)
+    # day = convert_dates(date)
 
     html = f'''
         <html>
@@ -24,17 +24,21 @@ def news_of_day(request):
             '''
     return HttpResponse(html)
 
+def news_of_day(request):
+    date = dt.date.today()
+    return render(request, 'all-news/today-news.html', {"date": date,})
 
-def convert_dates(dates):
 
-    # Function that gets the weekday number for the date.
-    day_number = dt.date.weekday(dates)
+# def convert_dates(dates):
 
-    days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday',"Sunday"]
+#     # Function that gets the weekday number for the date.
+#     day_number = dt.date.weekday(dates)
 
-    # Returning the actual day of the week
-    day = days[day_number]
-    return day
+#     days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday',"Sunday"]
+
+#     # Returning the actual day of the week
+#     day = days[day_number]
+#     return day
 
 def past_days_news(request,past_date):
     try:
@@ -43,16 +47,23 @@ def past_days_news(request,past_date):
     except ValueError:
         # Raise 404 error when ValueError is thrown
         raise Http404()
+        assert False
+
+    if date == dt.date.today():
+        return redirect(news_of_day)
 
 
-        day = convert_dates(date)
-        html = f'''
-        <html>
-            <body>
-                <h1>News for {day} {date.day}-{date.month}-{date.year}</h1>
-            </body>
-        </html>
-            '''
-        return HttpResponse(html)
+        # day = convert_dates(date)
+        # html = f'''
+        # <html>
+        #     <body>
+        #         <h1>News for {day} {date.day}-{date.month}-{date.year}</h1>
+        #     </body>
+        # </html>
+        #     '''
+        # return HttpResponse(html)
+
+    return render(request, 'all-news/past-news.html', {"date": date})
+
 
 
