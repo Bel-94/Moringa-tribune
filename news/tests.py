@@ -14,6 +14,6 @@ class EditorTestClass(TestCase):
 
      # Testing Save Method
     def test_save_method(self):
-        self.james.save_editor()
+        self.bel.save_editor()
         editors = Editor.objects.all()
         self.assertTrue(len(editors) > 0)
