@@ -11,8 +11,8 @@ class Editor(models.Model):
 
     def __str__(self):
         return self.first_name
-    # class Meta:
-    #     ordering = ['first_name']
+    class Meta:
+        ordering = ['first_name']
 
     def save_editor(self):
         self.save()
@@ -39,4 +39,9 @@ class Article(models.Model):
     @classmethod
     def days_news(cls,date):
         news = cls.objects.filter(pub_date__date = date)
+        return news
+
+    @classmethod
+    def search_by_title(cls,search_term):
+        news = cls.objects.filter(title__icontains=search_term)
         return news
