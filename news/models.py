@@ -1,6 +1,18 @@
 from django.db import models
+import datetime as dt
 
 # Create your models here.
+
+@classmethod
+def todays_news(cls):
+    today = dt.date.today()
+    news = cls.objects.filter(pub_date__date = today)
+    return news
+
+@classmethod
+def days_news(cls,date):
+    news = cls.objects.filter(pub_date__date = date)
+    return news
 
 class Editor(models.Model):
     first_name = models.CharField(max_length =30)
